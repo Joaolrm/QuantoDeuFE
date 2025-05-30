@@ -16,25 +16,24 @@ export const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      // Validação simples do número de telefone
       if (!phoneNumber || phoneNumber.replace(/\D/g, "").length < 10) {
         throw new Error("Por favor, insira um número de telefone válido");
       }
 
-      // Chamada à API
       const userData = await getUserEvents(phoneNumber);
 
-      // Aqui você pode redirecionar ou armazenar os dados do usuário
-      console.log("Dados do usuário:", userData);
-      // Exemplo: router.push(`/dashboard?phone=${encodeURIComponent(phoneNumber)}`);
+      if (userData) {
+        const cookieExpiration = new Date();
+        cookieExpiration.setDate(cookieExpiration.getDate() + 61); // Expira em 61 dias
+        
+        const cleanedNumber = phoneNumber.replace(/\D/g, "").replace(/^55/, "");
+        document.cookie = `userPhone=${cleanedNumber}; expires=${cookieExpiration.toUTCString()}; path=/`;
+      }
 
-      alert(
-        `Bem-vindo, ${userData.name}! Você tem ${userData.events.length} evento(s).`
-      );
+      // alert(`Bem-vindo, ${userData.name}! Você tem ${userData.events.length} evento(s).`);
+      router.push("/dashboard");
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Ocorreu um erro ao fazer login"
-      );
+      setError(err instanceof Error ? err.message : "Ocorreu um erro ao fazer login");
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +44,7 @@ export const LoginForm = () => {
       <div className="mb-6">
         <label
           htmlFor="phone"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-medium text-gray-50 mb-1"
         >
           Número de Telefone
         </label>
@@ -54,14 +53,11 @@ export const LoginForm = () => {
           id="phone"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
-          placeholder="51-991984252"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Ex: 51-991984252"
+          className="w-full px-4 py-2 border border-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           autoComplete="tel"
           inputMode="numeric"
         />
-        <p className="mt-1 text-xs text-gray-500">
-          Formato: DD-NNNNNNNNN (ex: 51-991984252)
-        </p>
       </div>
 
       {error && (
@@ -74,8 +70,8 @@ export const LoginForm = () => {
         type="submit"
         disabled={isLoading}
         className={`w-full py-2 px-4 rounded-md text-white font-medium ${
-          isLoading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
-        } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+          isLoading ? "bg-amber-400" : "bg-amber-600 hover:bg-amber-700"
+        } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2`}
       >
         {isLoading ? "Carregando..." : "Entrar"}
       </button>

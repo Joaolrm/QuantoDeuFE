@@ -6,7 +6,6 @@ export const getUserEvents = async (
   phoneNumber: string
 ): Promise<UserResponse> => {
   try {
-    debugger;
     // Remove qualquer caractere não numérico e o prefixo do país se existir
     const cleanedNumber = phoneNumber.replace(/\D/g, "").replace(/^55/, "");
 

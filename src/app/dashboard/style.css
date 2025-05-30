@@ -1,0 +1,81 @@
+/* Estilos base */
+main {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('/Churrasquinho.jpg'); /* Caminho para a imagem de fundo */
+  background-size: cover;
+  background-position: center;
+}
+.barra-footer{
+  background-color: #6E1309;
+}
+
+.container-dashboard {
+  background-color: rgba(0, 0, 0, 0.5); /* Transparência para destacar o conteúdo */
+  color: white;
+}
+
+.content-area {
+  padding: 20px;
+}
+
+/* Quadrado amarelo maior */
+.p-6.bg-yellow-300 {
+  max-width: 400px; /* Ajusta o tamanho máximo do quadrado */
+  margin: 0 auto; /* Centraliza o quadrado na tela */
+  padding: 30px; /* Aumenta o padding interno */
+}
+
+/* Barra fixa */
+.fixed-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+/* Botões redondos */
+.round-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f4f6;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.round-button .material-icons {
+  font-size: 24px;
+  color: #374151;
+}
+
+/* Botão de destaque */
+.accent-button {
+  background-color: #3b82f6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.accent-button .material-icons {
+  color: white;
+}
+
+/* Efeitos de hover */
+.round-button:hover {
+  transform: scale(1.05);
+}
+
+.accent-button:hover {
+  background-color: #2563eb;
+}
