@@ -13,7 +13,7 @@ export default function RootLayout({
 
       </head>
       <body>
-        <h1 className="text-center text-3xl text-white font-extrabold mb-2">Quanto Deu</h1>
+        <h1 className="titulo-logo m-4 drop-shadow-lg text-center text-4xl text-white font-extrabold"> <a href="/">Quanto Deu </a></h1>
         {children}
       </body>
     </html>

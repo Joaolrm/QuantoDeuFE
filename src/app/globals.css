@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Jomhuria;
   background-color: #6E1309;
+}
+.titulo-logo{
+  letter-spacing: 2px;
 }

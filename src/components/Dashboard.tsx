@@ -45,19 +45,19 @@ export const DashboardEvents = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="bg-yellow-400 p-6 rounded-lg shadow-lg w-80 max-w-full">
-        <h1 className="text-xl font-bold mb-4 text-center">Próximo Evento</h1>
+      <div className="bg-yellow-200 p-6 rounded-lg shadow-lg w-90 max-w-full">
+        <h1 className="text-3xl text-red-900 font-bold mb-4 text-center">Próximo Evento</h1>
         {user?.events?.length > 0 ? (
           user.events.map((event) => (
-            <div key={event.id} className="text-black mb-4">
-              <p className="font-semibold">Nome: {event.name}</p>
-              <p>
+            <div key={event.id} className="text-red-900 mb-4">
+              <h2 className="text-xl font-semibold">{event.name}</h2>
+              <h3 className="text-xl">
                 <span className="font-semibold">Data:</span>{" "}
                 {new Date(event.date).toLocaleDateString("pt-BR")}
-              </p>
-              <p>
-                <span className="font-semibold">Endereço:</span> {event.address}
-              </p>
+              </h3>
+                <a className="text-xl" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`} rel="noopener noreferrer">
+                  <span className="font-semibold ">Loc:</span> <span className="underline">{event.address}</span>
+                </a>
             </div>
           ))
         ) : (

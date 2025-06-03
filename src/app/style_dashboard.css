@@ -1,19 +1,22 @@
 /* Estilos base */
+.container-dashboard {
+  background-color: #6E1309; /* Transparência para destacar o conteúdo */
+  color: white;
+  
+}
 main {
   position: relative;
-  min-height: 100vh;
+  min-height: 75vh;
   background-image: url('/Churrasquinho.jpg'); /* Caminho para a imagem de fundo */
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 }
 .barra-footer{
   background-color: #6E1309;
 }
 
-.container-dashboard {
-  background-color: rgba(0, 0, 0, 0.5); /* Transparência para destacar o conteúdo */
-  color: white;
-}
+
 
 .content-area {
   padding: 20px;
@@ -78,4 +81,26 @@ main {
 
 .accent-button:hover {
   background-color: #2563eb;
+}
+
+@media (max-width: 480px) {
+  .barra-footer {
+    gap: 8px; 
+    padding: 10px;
+  }
+
+  .barra-footer button, 
+  .barra-footer a {
+    width: 70px; 
+    height: 70px;
+  }
+
+  .barra-footer .material-symbols-outlined {
+    font-size: 32px; 
+  }
+
+  .p-6.bg-yellow-300 {
+    width: 90%; 
+    max-width: none; 
+  }
 }

@@ -31,7 +31,7 @@ export const LoginForm = () => {
       }
 
       // alert(`Bem-vindo, ${userData.name}! Você tem ${userData.events.length} evento(s).`);
-      router.push("/dashboard");
+      router.push("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ocorreu um erro ao fazer login");
     } finally {
@@ -75,6 +75,7 @@ export const LoginForm = () => {
       >
         {isLoading ? "Carregando..." : "Entrar"}
       </button>
+      <a className="object-bottom-right underline" href="/cadastro">Registrar-se</a>
     </form>
   );
 };
