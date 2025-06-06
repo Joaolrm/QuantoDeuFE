@@ -49,11 +49,11 @@ export default function criandoEvento() {
     <div className="max-w-md mx-auto p-6 text-white rounded-lg shadow-lg space-y-4 form-add-evento">
       <div>
         <label className="block text-sm font-bold mb-2">Nome</label>
-        <input type="text" placeholder="Ex: Bruna" value={nome} onChange={(e) => setNome(e.target.value)} className="w-full p-2 rounded-lg fundo-input text-white placeholder-gray-300" />
+        <input type="text" placeholder="Ex: Bruna" value={nome} onChange={(e) => setNome(e.target.value)} className="w-full p-2 rounded-lg fundo-input text-white placeholder-gray-50" />
       </div>
       <div>
         <label className="block text-sm font-bold mb-2">Endereço</label>
-        <input type="text" placeholder="Ex: otto niemeyer 2500" value={endereco} onChange={(e) => setEndereco(e.target.value)} className="w-full p-2 rounded-lg fundo-input text-white placeholder-gray-300"/>
+        <input type="text" placeholder="Ex: otto niemeyer 2500" value={endereco} onChange={(e) => setEndereco(e.target.value)} className="w-full p-2 rounded-lg fundo-input text-white placeholder-gray-50"/>
       </div>
       <div>
         <label className="block text-sm font-bold mb-2">Data</label>

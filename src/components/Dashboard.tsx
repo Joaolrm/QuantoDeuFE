@@ -36,11 +36,11 @@ export const DashboardEvents = () => {
   }, [router]); // Adicionado `router` como dependência
 
   if (isLoading) {
-    return <div className="text-center text-blue-700">Carregando...</div>;
+    return <div className="text-center bg-orange-950 text-gray-100">Carregando...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-700">{error}</div>;
+    return <div className="text-cente bg-orange-950 text-gray-100">{error}</div>;
   }
 
   return (
