@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
+import Swal from "sweetalert2";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -138,6 +139,18 @@ export default function EventPage() {
   };
 
   const handleDeleteItem = async (itemId: number) => {
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Tem certeza que deseja deletar o item?",
+      text: "O item será removido de todos os usuários.",
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      showConfirmButton: true,
+      showCancelButton: true,
+    });
+
+    if (!result.isConfirmed) return;
+
     if (!event || !user?.id) return;
 
     try {
@@ -333,7 +346,7 @@ function ItemCard({
       )}
 
       {/* Botão de excluir (apenas para admin) */}
-      {isAdmin && !item.isRequired && (
+      {isAdmin && (
         <div className="mt-3 flex justify-end">
           <button
             onClick={() => onDelete(item.id)}
