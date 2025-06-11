@@ -16,7 +16,6 @@ export function EventList() {
     async function loadEvents() {
       try {
         if (user?.phoneNumber) {
-          // Busca os eventos diretamente da API usando o phoneNumber
           const peopleData = await apiService.getPeopleEventsByPhone(
             user.phoneNumber
           );
@@ -32,7 +31,12 @@ export function EventList() {
     }
 
     loadEvents();
-  }, [user?.phoneNumber]); // Dependência apenas do phoneNumber
+  }, [user?.phoneNumber]);
+
+  const handleEventDeleted = (deletedEventId: number) => {
+    setEvents(events.filter((event) => event.id !== deletedEventId));
+    toast.success("Evento excluído com sucesso!");
+  };
 
   if (loading) return <LoadingSpinner />;
 
@@ -69,7 +73,11 @@ export function EventList() {
     >
       <div className="backdrop-blur-sm bg-black/30 p-4 rounded-lg">
         {events.map((event) => (
-          <EventCard key={event.id} event={event} />
+          <EventCard
+            key={event.id}
+            event={event}
+            onEventDeleted={handleEventDeleted}
+          />
         ))}
       </div>
     </div>

@@ -1,22 +1,41 @@
+// src/components/auth/LoginForm.tsx
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { formatPhone, cleanPhone } from "@/utils/phoneUtils";
+import Swal from "sweetalert2";
 
 export function LoginForm() {
   const [phone, setPhone] = useState("");
   const { login } = useAuth();
   const router = useRouter();
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setPhone(formatted);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(phone);
-      toast.success("Login realizado com sucesso!");
+      // Remove formatação antes de enviar
+      const cleanedPhone = cleanPhone(phone);
+      await login(cleanedPhone);
+      await Swal.fire({
+        icon: "success",
+        title: "Logado com sucesso!",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     } catch (error) {
-      toast.error("Número não encontrado. Cadastre-se primeiro.");
+      await Swal.fire({
+        icon: "warning",
+        title: "Você ainda não possui cadastro.",
+        showConfirmButton: false,
+        timer: 1000,
+      });
       router.push("/register");
     }
   };
@@ -40,14 +59,15 @@ export function LoginForm() {
               type="tel"
               id="phone"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={handlePhoneChange}
               className="w-full rounded-md border border-gray-400 bg-[#550000] text-white p-2 sm:p-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-base"
-              placeholder="Ex: 51 99856 7312"
+              placeholder="(XX) XXXXX-XXXX"
               required
+              pattern="^\(\d{2}\) \d{4,5}-\d{4}$"
               inputMode="numeric"
             />
             <p className="text-xs text-gray-300 mt-1">
-              Digite apenas números (com DDD)
+              Digite seu telefone com DDD (apenas números)
             </p>
           </div>
           <button
