@@ -24,7 +24,34 @@ export function EventItemForm({
       e.target.type === "checkbox"
         ? (e.target as HTMLInputElement).checked
         : e.target.value;
-    onItemChange(index, field, value);
+
+    // Se estamos mudando isRequired para true, também definir ownerWantsThisItem como true
+    if (field === "isRequired" && value === "true") {
+      onItemChange(index, field, true);
+      onItemChange(index, "ownerWantsThisItem", true);
+    } else {
+      onItemChange(
+        index,
+        field,
+        field === "isRequired" ? value === "true" : value
+      );
+    }
+  };
+
+  // Função específica para lidar com a mudança do checkbox "Eu vou querer"
+  const handleOwnerWantsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // Só permite mudança se o item não for obrigatório
+    if (!item.isRequired) {
+      onItemChange(index, "ownerWantsThisItem", e.target.checked);
+    }
+  };
+
+  // Determina o valor do checkbox baseado na lógica do negócio
+  const getOwnerWantsValue = (): boolean => {
+    if (item.isRequired) {
+      return true; // Sempre true para itens obrigatórios
+    }
+    return item.ownerWantsThisItem ?? true; // Para itens opcionais, usa o valor do item ou true como padrão
   };
 
   return (
@@ -34,7 +61,7 @@ export function EventItemForm({
           <label className="block text-white text-sm mb-1">Nome do Item*</label>
           <input
             type="text"
-            value={item.name}
+            value={item.name || ""}
             onChange={(e) => handleInputChange(e, "name")}
             className="w-full p-2 rounded bg-white/90 text-gray-800 text-sm"
             placeholder="Ex: Carne, Bebidas"
@@ -58,10 +85,8 @@ export function EventItemForm({
           <label className="flex items-center space-x-2 text-white text-sm">
             <input
               type="checkbox"
-              checked={item.isRequired ? true : item.ownerWantsThisItem}
-              onChange={(e) =>
-                !item.isRequired && handleInputChange(e, "ownerWantsThisItem")
-              }
+              checked={getOwnerWantsValue()}
+              onChange={handleOwnerWantsChange}
               className={`rounded bg-white/90 ${
                 item.isRequired ? "opacity-50 cursor-not-allowed" : ""
               }`}

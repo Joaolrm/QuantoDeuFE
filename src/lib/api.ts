@@ -200,7 +200,6 @@ export const apiService = {
     itemId: number,
     participantData: AddItemToParticipantDTO
   ): Promise<ItemAddParticipantsCutEventIdDTO> {
-        debugger;
     const response = await api.post(
       `/Itens/${itemId}/addItemToParticipant`,
       participantData

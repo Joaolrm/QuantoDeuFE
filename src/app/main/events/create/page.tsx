@@ -34,10 +34,21 @@ export default function CreateEventPage() {
 
   const handleItemChange = (index: number, field: string, value: any) => {
     const newItems = [...items];
-    newItems[index] = {
-      ...newItems[index],
-      [field]: field === "name" ? value : value === "true" ? true : false,
-    };
+    const updatedItem = { ...newItems[index] };
+
+    if (field === "name") {
+      updatedItem.name = value;
+    } else if (field === "isRequired") {
+      updatedItem.isRequired = value;
+      // Se tornou obrigatório, garantir que ownerWantsThisItem seja true
+      if (value === true) {
+        updatedItem.ownerWantsThisItem = true;
+      }
+    } else if (field === "ownerWantsThisItem") {
+      updatedItem.ownerWantsThisItem = value;
+    }
+
+    newItems[index] = updatedItem;
     setItems(newItems);
   };
 
