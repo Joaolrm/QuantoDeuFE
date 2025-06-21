@@ -1,4 +1,4 @@
-import { ItemAddParticipantsCutEventIdDTO } from "@/lib/api";
+import { ItemAddParticipantsCutEventIdDTO } from "@/types/api";
 
 interface ItemCardProps {
   item: ItemAddParticipantsCutEventIdDTO;

@@ -7,7 +7,8 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { apiService, PeopleAddEventsDTO } from "@/lib/api";
+import { apiService } from "@/lib/api";
+import { PeopleAddEventsDTO } from "@/types/api";
 import { useRouter } from "next/navigation";
 
 interface AuthContextType {

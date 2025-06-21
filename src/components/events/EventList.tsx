@@ -3,7 +3,8 @@
 import { EventCard } from "@/components/events/EventCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { EventCutItensDTO, apiService } from "@/lib/api";
+import { apiService } from "@/lib/api";
+import { EventCutItensDTO } from "@/types/api";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 import toast from "react-hot-toast";
 

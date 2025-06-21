@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent } from "react";
-import { ItemCutIdEventIdTotalCostDTO } from "@/lib/api";
+import { ItemCutIdEventIdTotalCostDTO } from "@/types/api";
 
 type EventItemFormProps = {
   item: ItemCutIdEventIdTotalCostDTO;

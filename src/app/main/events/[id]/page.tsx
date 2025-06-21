@@ -3,13 +3,13 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiService } from "@/lib/api";
 import {
-  apiService,
   EventAddPeopleItemsParticipantsCutEventIdDTO,
   ItemAddParticipantsCutEventIdDTO,
   ItemCutIdDTO,
   AddItemToParticipantDTO,
-} from "@/lib/api";
+} from "@/types/api";
 import { useAuth } from "@/contexts/AuthContext";
 import toast from "react-hot-toast";
 import Link from "next/link";

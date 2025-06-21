@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EventCutItensDTO } from "@/lib/api";
+import { EventCutItensDTO } from "@/types/api";
 import { formatDate } from "@/utils/date";
 
 interface EventCardProps {

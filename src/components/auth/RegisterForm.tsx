@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { apiService } from "@/lib/api";
-import { CreatePeopleRequest } from "@/lib/api";
+import { CreatePeopleRequest } from "@/types/api";
 import { formatPhone, cleanPhone } from "@/utils/phoneUtils";
 import Swal from "sweetalert2";
 
