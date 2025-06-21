@@ -3,8 +3,14 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { formatPhone, cleanPhone } from "@/utils/phoneUtils";
+import { useState, useEffect } from "react";
+import {
+  formatPhone,
+  cleanPhone,
+  savePhoneToStorage,
+  getPhoneFromStorage,
+  clearPhoneFromStorage,
+} from "@/utils/phoneUtils";
 import Swal from "sweetalert2";
 
 export function LoginForm() {
@@ -12,9 +18,19 @@ export function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
 
+  // Carrega o telefone do localStorage na inicialização
+  useEffect(() => {
+    const savedPhone = getPhoneFromStorage();
+    if (savedPhone) {
+      setPhone(savedPhone);
+    }
+  }, []);
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhone(e.target.value);
     setPhone(formatted);
+    // Salva o telefone no localStorage sempre que for alterado
+    savePhoneToStorage(formatted);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,6 +39,10 @@ export function LoginForm() {
       // Remove formatação antes de enviar
       const cleanedPhone = cleanPhone(phone);
       await login(cleanedPhone);
+
+      // Limpa o telefone do localStorage apenas após login bem-sucedido
+      clearPhoneFromStorage();
+
       await Swal.fire({
         icon: "success",
         title: "Logado com sucesso!",

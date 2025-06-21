@@ -2,10 +2,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiService } from "@/lib/api";
 import { CreatePeopleRequest } from "@/types/api";
-import { formatPhone, cleanPhone } from "@/utils/phoneUtils";
+import {
+  formatPhone,
+  cleanPhone,
+  savePhoneToStorage,
+  getPhoneFromStorage,
+  clearPhoneFromStorage,
+} from "@/utils/phoneUtils";
 import Swal from "sweetalert2";
 
 export function RegisterForm() {
@@ -17,6 +23,17 @@ export function RegisterForm() {
   });
 
   const router = useRouter();
+
+  // Carrega o telefone do localStorage na inicialização
+  useEffect(() => {
+    const savedPhone = getPhoneFromStorage();
+    if (savedPhone) {
+      setFormData((prev) => ({
+        ...prev,
+        phoneNumber: savedPhone,
+      }));
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -34,6 +51,8 @@ export function RegisterForm() {
       ...prev,
       phoneNumber: formatted,
     }));
+    // Salva o telefone no localStorage sempre que for alterado
+    savePhoneToStorage(formatted);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

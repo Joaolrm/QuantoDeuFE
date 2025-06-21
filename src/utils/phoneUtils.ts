@@ -22,3 +22,23 @@ export const formatPhone = (value: string): string => {
 export const cleanPhone = (value: string): string => {
   return value.replace(/\D/g, "");
 };
+
+// Funções para persistência do telefone no localStorage
+export const savePhoneToStorage = (phone: string): void => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("quantoDeuPhone", phone);
+  }
+};
+
+export const getPhoneFromStorage = (): string => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("quantoDeuPhone") || "";
+  }
+  return "";
+};
+
+export const clearPhoneFromStorage = (): void => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("quantoDeuPhone");
+  }
+};
