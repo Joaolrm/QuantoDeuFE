@@ -11,7 +11,6 @@ import {
   AddItemToParticipantDTO,
 } from "@/types/api";
 import { useAuth } from "@/contexts/AuthContext";
-import toast from "react-hot-toast";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
 import Swal from "sweetalert2";
@@ -43,7 +42,11 @@ export default function EventPage() {
         }
       } catch (error) {
         console.error("Error loading event details:", error);
-        toast.error("Falha ao carregar detalhes do evento");
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: "Falha ao carregar detalhes do evento",
+        });
         router.push("/main");
       } finally {
         setLoading(false);
@@ -57,47 +60,43 @@ export default function EventPage() {
     if (!user?.id || !event) return;
 
     try {
-      const selectedItems = event.itens
-        .filter(
-          (item) =>
-            !item.isRequired && item.participants.some((p) => p.id === user.id)
-        )
-        .map((item) => item.id);
-
       const item = event.itens.find((i) => i.id === itemId);
       if (!item) return;
 
-      // Toggle selection
-      const newSelectedItems = item.participants.some((p) => p.id === user.id)
-        ? selectedItems.filter((id) => id !== itemId)
-        : [...selectedItems, itemId];
+      const isCurrentlyParticipating = item.participants.some((p) => p.id === user.id);
 
-      await apiService.addParticipantToEvent(event.id, {
-        peopleId: user.id,
-        selectedOptionalItemsId: newSelectedItems,
-      });
-
-      // Atualiza o estado local
-      const updatedEvent = { ...event };
-      const updatedItem = updatedEvent.itens.find((i) => i.id === itemId);
-      if (updatedItem) {
-        if (updatedItem.participants.some((p) => p.id === user.id)) {
-          updatedItem.participants = updatedItem.participants.filter(
-            (p) => p.id !== user.id
-          );
-        } else {
-          updatedItem.participants = [
-            ...updatedItem.participants,
-            { id: user.id, name: user.name },
-          ];
-        }
+      if (isCurrentlyParticipating) {
+        // Remove o participante do item
+        await apiService.removeItemFromParticipant(itemId, user.id, event.id);
+      } else {
+        // Adiciona o participante ao item
+        const participantData: AddItemToParticipantDTO = {
+          eventId: event.id,
+          peopleId: user.id,
+        };
+        await apiService.addItemToParticipant(itemId, participantData);
       }
-      setEvent(updatedEvent);
 
-      toast.success("Participação atualizada!");
+      // Recarrega os detalhes do evento para obter dados atualizados
+      const eventData = await apiService.getEventDetails(event.id, user.id);
+      setEvent(eventData);
+
+      Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: isCurrentlyParticipating 
+          ? "Item removido da sua lista!" 
+          : "Item adicionado à sua lista!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error updating participation:", error);
-      toast.error("Falha ao atualizar participação");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Falha ao atualizar participação",
+      });
     }
   };
 
@@ -131,10 +130,20 @@ export default function EventPage() {
         ownerWantsThisItem: true,
       });
       setShowAddItemForm(false);
-      toast.success("Item adicionado com sucesso!");
+      Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: "Item adicionado com sucesso!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error adding item:", error);
-      toast.error("Falha ao adicionar item");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Falha ao adicionar item",
+      });
     }
   };
 
@@ -159,10 +168,20 @@ export default function EventPage() {
       // Recarrega os detalhes do evento
       const eventData = await apiService.getEventDetails(event.id, user.id);
       setEvent(eventData);
-      toast.success("Item removido com sucesso!");
+      Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: "Item removido com sucesso!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error deleting item:", error);
-      toast.error("Falha ao remover item");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Falha ao remover item",
+      });
     }
   };
 
@@ -171,7 +190,13 @@ export default function EventPage() {
     navigator.clipboard.writeText(
       `${window.location.origin}/join/${event.hashInvite}`
     );
-    toast.success("Link de convite copiado!");
+    Swal.fire({
+      icon: "success",
+      title: "Sucesso!",
+      text: "Link de convite copiado!",
+      timer: 1500,
+      showConfirmButton: false,
+    });
   };
 
   if (loading) {

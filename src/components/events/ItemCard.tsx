@@ -34,16 +34,32 @@ export function ItemCard({
           </p>
         </div>
 
-        {!item.isRequired && (
+        {/* Botão de participação - não aparece para itens obrigatórios */}
+        {!item.isRequired && currentUserId && (
           <button
             onClick={() => onToggle(item.id)}
-            className={`py-1 px-3 rounded text-sm ${
+            className={`py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
               isCurrentUserParticipating
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-gray-600 hover:bg-gray-700"
-            } text-white transition-colors`}
+                ? "bg-green-600 hover:bg-green-700 text-white shadow-lg"
+                : "bg-gray-600 hover:bg-gray-700 text-white"
+            }`}
+            title={
+              isCurrentUserParticipating
+                ? "Clique para não querer"
+                : "Clique para querer"
+            }
           >
-            {isCurrentUserParticipating ? "Quero" : "Não quero"}
+            {isCurrentUserParticipating ? (
+              <span className="flex items-center gap-1">
+                <span>✓</span>
+                Quero
+              </span>
+            ) : (
+              <span className="flex items-center gap-1">
+                <span>○</span>
+                Não quero
+              </span>
+            )}
           </button>
         )}
       </div>

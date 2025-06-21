@@ -9,9 +9,9 @@ import {
   apiService,
 } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
-import toast from "react-hot-toast";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
+import Swal from "sweetalert2";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -72,13 +72,21 @@ export default function CreateEventPage() {
     setLoading(true);
 
     if (!formData.name || !formData.date || !formData.address) {
-      toast.error("Preencha todos os campos obrigatórios");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Preencha todos os campos obrigatórios",
+      });
       setLoading(false);
       return;
     }
 
     if (items.length === 0) {
-      toast.error("Adicione pelo menos um item");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Adicione pelo menos um item",
+      });
       setLoading(false);
       return;
     }
@@ -97,11 +105,21 @@ export default function CreateEventPage() {
       };
 
       await apiService.createEvent(eventData);
-      toast.success("Evento criado com sucesso!");
+      Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: "Evento criado com sucesso!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       router.push("/main");
     } catch (error) {
       console.error("Erro ao criar evento:", error);
-      toast.error("Falha ao criar evento");
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Falha ao criar evento",
+      });
     } finally {
       setLoading(false);
     }
@@ -112,44 +130,43 @@ export default function CreateEventPage() {
       className="min-h-screen p-4 bg-cover bg-center"
       style={{ backgroundImage: "url('/churrasco.jpg')" }}
     >
-      <div className="backdrop-blur-sm bg-black/30 rounded-lg p-6 max-w-3xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-white">Criar Novo Evento</h1>
+      <div className="backdrop-blur-sm bg-black/30 rounded-lg p-6 max-w-2xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-white mb-2">
+            Criar Novo Evento
+          </h1>
           <Link
             href="/main"
             className="text-white hover:text-amber-300 transition-colors"
           >
-            Voltar
+            ← Voltar para Meus Eventos
           </Link>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Informações básicas do evento */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-white mb-1">Nome do Evento*</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full p-2 rounded bg-white/90 text-gray-800"
-                placeholder="Ex: Churrasco de Aniversário"
-                required
-              />
-            </div>
+          <div>
+            <label className="block text-white mb-1">Nome do Evento*</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full p-2 rounded bg-white/90 text-gray-800"
+              placeholder="Ex: Churrasco de Domingo"
+              required
+            />
+          </div>
 
-            <div>
-              <label className="block text-white mb-1">Data e Hora*</label>
-              <input
-                type="datetime-local"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                className="w-full p-2 rounded bg-white/90 text-gray-800"
-                required
-              />
-            </div>
+          <div>
+            <label className="block text-white mb-1">Data*</label>
+            <input
+              type="datetime-local"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
+              className="w-full p-2 rounded bg-white/90 text-gray-800"
+              required
+            />
           </div>
 
           <div>

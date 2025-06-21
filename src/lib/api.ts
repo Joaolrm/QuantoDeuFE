@@ -103,10 +103,18 @@ export const apiService = {
     participantData: AddItemToParticipantDTO
   ): Promise<ItemAddParticipantsCutEventIdDTO> {
     const response = await api.post(
-      `/Itens/${itemId}/addItemToParticipant`,
+      `/Itens/${itemId}/AddItemToParticipant`,
       participantData
     );
     return response.data;
+  },
+
+  async removeItemFromParticipant(
+    itemId: number,
+    peopleId: number,
+    eventId: number
+  ): Promise<void> {
+    await api.delete(`/Itens/${itemId}/Participant/${peopleId}/Event/${eventId}`);
   },
 
   async deleteItem(itemId: number): Promise<void> {

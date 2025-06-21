@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { apiService } from "@/lib/api";
 import { EventCutItensDTO } from "@/types/api";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 export function EventList() {
   const { user } = useAuth();
@@ -17,15 +17,18 @@ export function EventList() {
     async function loadEvents() {
       try {
         if (user?.phoneNumber) {
-          const peopleData = await apiService.getPeopleEventsByPhone(
+          const userData = await apiService.getPeopleEventsByPhone(
             user.phoneNumber
           );
-          setEvents(peopleData.events || []);
+          setEvents(userData.events || []);
         }
       } catch (error) {
         console.error("Error loading events:", error);
-        toast.error("Falha ao carregar eventos");
-        setEvents([]);
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: "Falha ao carregar eventos",
+        });
       } finally {
         setLoading(false);
       }
@@ -35,8 +38,16 @@ export function EventList() {
   }, [user?.phoneNumber]);
 
   const handleEventDeleted = (deletedEventId: number) => {
-    setEvents(events.filter((event) => event.id !== deletedEventId));
-    toast.success("Evento excluído com sucesso!");
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== deletedEventId)
+    );
+    Swal.fire({
+      icon: "success",
+      title: "Sucesso!",
+      text: "Evento excluído com sucesso!",
+      timer: 1500,
+      showConfirmButton: false,
+    });
   };
 
   if (loading) return <LoadingSpinner />;
