@@ -3,11 +3,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  CreateEventRequest,
-  ItemCutIdEventIdTotalCostDTO,
-  apiService,
-} from "@/lib/api";
+import { apiService } from "@/lib/api";
+import { CreateEventRequest, ItemCutIdEventIdTotalCostDTO } from "@/types/api";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
@@ -76,16 +73,6 @@ export default function CreateEventPage() {
         icon: "error",
         title: "Erro",
         text: "Preencha todos os campos obrigatórios",
-      });
-      setLoading(false);
-      return;
-    }
-
-    if (items.length === 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Erro",
-        text: "Adicione pelo menos um item",
       });
       setLoading(false);
       return;
@@ -182,11 +169,11 @@ export default function CreateEventPage() {
             />
           </div>
 
-          {/* Lista de itens */}
+          {/* Lista de itens - agora opcional */}
           <div className="mt-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-white">
-                Itens do Evento*
+                Itens do Evento (Opcional)
               </h2>
               <button
                 type="button"
@@ -199,7 +186,8 @@ export default function CreateEventPage() {
 
             {items.length === 0 ? (
               <div className="text-center py-4 text-white/70">
-                Nenhum item adicionado ainda
+                Nenhum item adicionado ainda. Você pode adicionar itens depois
+                de criar o evento.
               </div>
             ) : (
               <div className="space-y-3">
