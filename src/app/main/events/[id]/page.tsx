@@ -9,10 +9,12 @@ import {
   ItemAddParticipantsCutEventIdDTO,
   ItemCutIdDTO,
   AddItemToParticipantDTO,
+  ItemUpdateDTO,
 } from "@/types/api";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
+import { ItemEditModal } from "@/components/events/ItemEditModal";
 import Swal from "sweetalert2";
 import { ItemCard } from "@/components/events/ItemCard";
 
@@ -24,6 +26,8 @@ export default function EventPage() {
   const [event, setEvent] =
     useState<EventAddPeopleItemsParticipantsCutEventIdDTO | null>(null);
   const [showAddItemForm, setShowAddItemForm] = useState(false);
+  const [editingItem, setEditingItem] = useState<ItemAddParticipantsCutEventIdDTO | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [newItem, setNewItem] = useState({
     name: "",
     isRequired: false,
@@ -199,6 +203,34 @@ export default function EventPage() {
     });
   };
 
+  const handleEditItem = (item: ItemAddParticipantsCutEventIdDTO) => {
+    setEditingItem(item);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateItem = async (itemId: number, itemData: ItemUpdateDTO) => {
+    if (!event || !user?.id) return;
+
+    try {
+      await apiService.updateItem(itemId, itemData);
+
+      // Recarrega os detalhes do evento
+      const eventData = await apiService.getEventDetails(event.id, user.id);
+      setEvent(eventData);
+
+      Swal.fire({
+        icon: "success",
+        title: "Sucesso!",
+        text: "Item atualizado com sucesso!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.error("Error updating item:", error);
+      throw error;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -301,6 +333,7 @@ export default function EventPage() {
               onToggle={handleToggleItem}
               isAdmin={isAdmin}
               onDelete={handleDeleteItem}
+              onEdit={handleEditItem}
             />
           ))}
         </div>
@@ -314,6 +347,17 @@ export default function EventPage() {
           </Link>
         </div>
       </div>
+
+      {/* Modal de edição de item */}
+      <ItemEditModal
+        item={editingItem}
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingItem(null);
+        }}
+        onSave={handleUpdateItem}
+      />
     </div>
   );
 }

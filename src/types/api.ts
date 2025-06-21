@@ -113,3 +113,9 @@ export interface AddItemToParticipantDTO {
   eventId: number;
   peopleId: number;
 }
+
+export interface ItemUpdateDTO {
+  name: string;
+  isRequired: boolean;
+  totalCost: number;
+}
