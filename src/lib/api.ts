@@ -18,6 +18,7 @@ import {
   ItemSimpleResponseDTO,
   AddItemToParticipantDTO,
   ItemUpdateDTO,
+  PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO,
 } from "../types/api";
 
 const api = axios.create({
@@ -75,7 +76,7 @@ export const apiService = {
 
   async addParticipantToEvent(
     eventId: number,
-    participantData: AddParticipantRequest
+    participantData: PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO
   ): Promise<any> {
     const response = await api.post(
       `/Events/${eventId}/AddParticipant`,
@@ -115,14 +116,19 @@ export const apiService = {
     peopleId: number,
     eventId: number
   ): Promise<void> {
-    await api.delete(`/Itens/${itemId}/Participant/${peopleId}/Event/${eventId}`);
+    await api.delete(
+      `/Itens/${itemId}/Participant/${peopleId}/Event/${eventId}`
+    );
   },
 
   async deleteItem(itemId: number): Promise<void> {
     await api.delete(`/Itens/${itemId}`);
   },
 
-  async updateItem(itemId: number, itemData: ItemUpdateDTO): Promise<ItemSimpleResponseDTO> {
+  async updateItem(
+    itemId: number,
+    itemData: ItemUpdateDTO
+  ): Promise<ItemSimpleResponseDTO> {
     const response = await api.put(`/Itens/${itemId}`, itemData);
     return response.data;
   },

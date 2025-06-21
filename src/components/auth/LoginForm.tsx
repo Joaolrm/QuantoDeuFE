@@ -2,7 +2,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
   formatPhone,
@@ -17,6 +17,8 @@ export function LoginForm() {
   const [phone, setPhone] = useState("");
   const { login } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect");
 
   // Carrega o telefone do localStorage na inicialização
   useEffect(() => {
@@ -49,6 +51,11 @@ export function LoginForm() {
         showConfirmButton: false,
         timer: 1000,
       });
+
+      // Redireciona para a página específica se houver, senão vai para /main
+      if (redirectTo) {
+        router.push(redirectTo);
+      }
     } catch (error) {
       await Swal.fire({
         icon: "warning",
@@ -56,7 +63,12 @@ export function LoginForm() {
         showConfirmButton: false,
         timer: 1000,
       });
-      router.push("/register");
+
+      // Mantém o redirecionamento ao ir para o registro
+      const registerUrl = redirectTo
+        ? `/register?redirect=${encodeURIComponent(redirectTo)}`
+        : "/register";
+      router.push(registerUrl);
     }
   };
 

@@ -119,3 +119,8 @@ export interface ItemUpdateDTO {
   isRequired: boolean;
   totalCost: number;
 }
+
+export interface PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO {
+  peopleId: number;
+  selectedOptionalItemsId?: number[];
+}

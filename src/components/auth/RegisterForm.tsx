@@ -1,7 +1,8 @@
 // src/components/auth/RegisterForm.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { apiService } from "@/lib/api";
 import { CreatePeopleRequest } from "@/types/api";
@@ -15,14 +16,17 @@ import {
 import Swal from "sweetalert2";
 
 export function RegisterForm() {
+  const { register } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect");
+
   const [formData, setFormData] = useState<CreatePeopleRequest>({
     name: "",
     phoneNumber: "",
     dateOfBirth: "",
     gender: "Unspecified",
   });
-
-  const router = useRouter();
 
   // Carrega o telefone do localStorage na inicialização
   useEffect(() => {
@@ -74,7 +78,12 @@ export function RegisterForm() {
         timer: 1500,
       });
 
-      router.push("/login");
+      // Redireciona para a página específica se houver, senão vai para login
+      if (redirectTo) {
+        router.push(`/login?redirect=${encodeURIComponent(redirectTo)}`);
+      } else {
+        router.push("/login");
+      }
     } catch (error: any) {
       // Tenta extrair a mensagem do corpo da resposta
       const errorMessage =

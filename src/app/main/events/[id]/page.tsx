@@ -17,6 +17,7 @@ import { EventItemForm } from "@/components/events/EventItemForm";
 import { ItemEditModal } from "@/components/events/ItemEditModal";
 import Swal from "sweetalert2";
 import { ItemCard } from "@/components/events/ItemCard";
+import { ShareButton } from "@/components/ui/ShareButton";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -26,7 +27,8 @@ export default function EventPage() {
   const [event, setEvent] =
     useState<EventAddPeopleItemsParticipantsCutEventIdDTO | null>(null);
   const [showAddItemForm, setShowAddItemForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<ItemAddParticipantsCutEventIdDTO | null>(null);
+  const [editingItem, setEditingItem] =
+    useState<ItemAddParticipantsCutEventIdDTO | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [newItem, setNewItem] = useState({
     name: "",
@@ -67,7 +69,9 @@ export default function EventPage() {
       const item = event.itens.find((i) => i.id === itemId);
       if (!item) return;
 
-      const isCurrentlyParticipating = item.participants.some((p) => p.id === user.id);
+      const isCurrentlyParticipating = item.participants.some(
+        (p) => p.id === user.id
+      );
 
       if (isCurrentlyParticipating) {
         // Remove o participante do item
@@ -88,8 +92,8 @@ export default function EventPage() {
       Swal.fire({
         icon: "success",
         title: "Sucesso!",
-        text: isCurrentlyParticipating 
-          ? "Item removido da sua lista!" 
+        text: isCurrentlyParticipating
+          ? "Item removido da sua lista!"
           : "Item adicionado à sua lista!",
         timer: 1500,
         showConfirmButton: false,
@@ -189,20 +193,6 @@ export default function EventPage() {
     }
   };
 
-  const copyInviteLink = () => {
-    if (!event) return;
-    navigator.clipboard.writeText(
-      `${window.location.origin}/join/${event.hashInvite}`
-    );
-    Swal.fire({
-      icon: "success",
-      title: "Sucesso!",
-      text: "Link de convite copiado!",
-      timer: 1500,
-      showConfirmButton: false,
-    });
-  };
-
   const handleEditItem = (item: ItemAddParticipantsCutEventIdDTO) => {
     setEditingItem(item);
     setShowEditModal(true);
@@ -263,12 +253,15 @@ export default function EventPage() {
             </p>
           </div>
 
-          <button
-            onClick={copyInviteLink}
-            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-          >
-            Compartilhar Evento
-          </button>
+          <div className="flex items-center gap-2">
+            {event && (
+              <ShareButton
+                title={`Convite para: ${event.name}`}
+                text={`Você foi convidado para participar do evento "${event.name}"!`}
+                url={`${window.location.origin}/join/${event.hashInvite}`}
+              />
+            )}
+          </div>
         </div>
 
         {/* Lista de Itens */}
