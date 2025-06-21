@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { EventItemForm } from "@/components/events/EventItemForm";
 import Swal from "sweetalert2";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -118,16 +119,11 @@ export default function CreateEventPage() {
       style={{ backgroundImage: "url('/churrasco.jpg')" }}
     >
       <div className="backdrop-blur-sm bg-black/30 rounded-lg p-6 max-w-2xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white mb-2">
-            Criar Novo Evento
-          </h1>
-          <Link
-            href="/main"
-            className="text-white hover:text-amber-300 transition-colors"
-          >
-            ← Voltar para Meus Eventos
-          </Link>
+        <div className="flex items-center gap-4 mb-6">
+          <BackButton href="/main" />
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-white">Criar Novo Evento</h1>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -140,8 +136,12 @@ export default function CreateEventPage() {
               onChange={handleInputChange}
               className="w-full p-2 rounded bg-white/90 text-gray-800"
               placeholder="Ex: Churrasco de Domingo"
+              maxLength={60}
               required
             />
+            <p className="text-xs text-gray-400 mt-1">
+              {formData.name.length}/60 caracteres
+            </p>
           </div>
 
           <div>
@@ -165,8 +165,12 @@ export default function CreateEventPage() {
               onChange={handleInputChange}
               className="w-full p-2 rounded bg-white/90 text-gray-800"
               placeholder="Ex: Rua Otto Niemeyer, 26"
+              maxLength={100}
               required
             />
+            <p className="text-xs text-gray-400 mt-1">
+              {formData.address.length}/100 caracteres
+            </p>
           </div>
 
           {/* Lista de itens - agora opcional */}

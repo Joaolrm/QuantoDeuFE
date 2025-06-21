@@ -102,8 +102,12 @@ export function ItemEditModal({
               onChange={handleInputChange}
               className="w-full rounded-md border border-gray-400 bg-[#550000] text-white p-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Nome do item"
+              maxLength={50}
               required
             />
+            <p className="text-xs text-gray-400 mt-1">
+              {formData.name.length}/50 caracteres
+            </p>
           </div>
 
           <div>

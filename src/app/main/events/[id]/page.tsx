@@ -18,6 +18,7 @@ import { ItemEditModal } from "@/components/events/ItemEditModal";
 import Swal from "sweetalert2";
 import { ItemCard } from "@/components/events/ItemCard";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { BackButton } from "@/components/ui/BackButton";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -245,15 +246,11 @@ export default function EventPage() {
       style={{ backgroundImage: "url('/churrasco.jpg')" }}
     >
       <div className="backdrop-blur-sm bg-black/30 rounded-lg p-6 max-w-4xl mx-auto">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-white">{event.name}</h1>
-            <p className="text-gray-300">
-              {new Date(event.date).toLocaleDateString()} • {event.address}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
+        {/* Header com botão de voltar e informações do evento */}
+        <div className="mb-6">
+          {/* Primeira linha: Botão voltar e botão compartilhar */}
+          <div className="flex justify-between items-center mb-4">
+            <BackButton href="/main" />
             {event && (
               <ShareButton
                 title={`Convite para: ${event.name}`}
@@ -262,19 +259,50 @@ export default function EventPage() {
               />
             )}
           </div>
+          
+          {/* Segunda linha: Título e informações do evento */}
+          <div className="space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white break-words">
+              {event.name}
+            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-gray-300">
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>{new Date(event.date).toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span className="break-words">{event.address}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Lista de Itens */}
         <div className="space-y-4 mb-8">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-white">
-              Itens do Evento
-            </h2>
+          {/* Header da seção de itens */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div>
+              <h2 className="text-xl font-semibold text-white">
+                Itens do Evento
+              </h2>
+              <p className="text-gray-300 text-sm">
+                Gerencie os itens e veja quem vai trazer o quê
+              </p>
+            </div>
             {isAdmin && (
               <button
                 onClick={() => setShowAddItemForm(!showAddItemForm)}
-                className="bg-amber-600 text-white py-1 px-3 rounded text-sm hover:bg-amber-700 transition-colors"
+                className="bg-amber-600 text-white py-2 px-4 rounded-lg text-sm hover:bg-amber-700 transition-colors flex items-center gap-2 w-full sm:w-auto justify-center"
               >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
                 {showAddItemForm ? "Cancelar" : "Adicionar Item"}
               </button>
             )}
@@ -282,7 +310,8 @@ export default function EventPage() {
 
           {/* Formulário para adicionar novo item */}
           {showAddItemForm && isAdmin && (
-            <div className="bg-white/10 p-4 rounded-lg mb-4">
+            <div className="bg-white/10 p-4 rounded-lg mb-4 border border-white/20">
+              <h3 className="text-white font-medium mb-3">Novo Item</h3>
               <EventItemForm
                 item={newItem}
                 index={0}
@@ -307,37 +336,47 @@ export default function EventPage() {
                 }}
                 onRemoveItem={() => setShowAddItemForm(false)}
               />
-              <div className="flex justify-end mt-2">
+              <div className="flex justify-end mt-4">
                 <button
                   onClick={handleAddItem}
-                  className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors"
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
                 >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
                   Confirmar
                 </button>
               </div>
             </div>
           )}
 
-          {event.itens.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              currentUserId={user?.id}
-              onToggle={handleToggleItem}
-              isAdmin={isAdmin}
-              onDelete={handleDeleteItem}
-              onEdit={handleEditItem}
-            />
-          ))}
-        </div>
+          {/* Lista de itens */}
+          <div className="space-y-3">
+            {event.itens.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                currentUserId={user?.id}
+                onToggle={handleToggleItem}
+                isAdmin={isAdmin}
+                onDelete={handleDeleteItem}
+                onEdit={handleEditItem}
+              />
+            ))}
+          </div>
 
-        <div className="mt-6">
-          <Link
-            href="/main"
-            className="text-white hover:text-amber-300 transition-colors"
-          >
-            Voltar para Meus Eventos
-          </Link>
+          {/* Mensagem quando não há itens */}
+          {event.itens.length === 0 && (
+            <div className="text-center py-8 bg-white/5 rounded-lg border border-white/10">
+              <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+              <p className="text-gray-300 text-lg">Nenhum item cadastrado ainda</p>
+              <p className="text-gray-400 text-sm mt-1">
+                {isAdmin ? "Adicione itens para começar!" : "Aguarde o admin adicionar itens."}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
