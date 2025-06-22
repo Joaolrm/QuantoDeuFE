@@ -20,6 +20,7 @@ import {
   ItemUpdateDTO,
   PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO,
   EventShoppingStatisticsDTO,
+  EventCompleteReportDTO,
 } from "../types/api";
 
 const api = axios.create({
@@ -136,6 +137,12 @@ export const apiService = {
 
   async getEventShoppingStatistics(eventId: number): Promise<EventShoppingStatisticsDTO> {
     const response = await api.get(`/Events/${eventId}/ShoppingStatistics`);
+    return response.data;
+  },
+
+  // Complete Report
+  async getEventCompleteReport(eventId: number): Promise<EventCompleteReportDTO> {
+    const response = await api.get(`/Events/${eventId}/CompleteReport`);
     return response.data;
   },
 };

@@ -20,6 +20,7 @@ import { ItemCard } from "@/components/events/ItemCard";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { BackButton } from "@/components/ui/BackButton";
 import ShoppingReport from "@/components/events/ShoppingReport";
+import CompleteReport from "@/components/events/CompleteReport";
 
 export default function EventPage() {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export default function EventPage() {
     useState<ItemAddParticipantsCutEventIdDTO | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showShoppingReport, setShowShoppingReport] = useState(false);
+  const [showCompleteReport, setShowCompleteReport] = useState(false);
   const [newItem, setNewItem] = useState({
     name: "",
     isRequired: false,
@@ -257,6 +259,15 @@ export default function EventPage() {
         />
       )}
 
+      {/* Complete Report Modal */}
+      {showCompleteReport && event && (
+        <CompleteReport
+          eventId={event.id}
+          eventName={event.name}
+          onClose={() => setShowCompleteReport(false)}
+        />
+      )}
+
       <div className="backdrop-blur-sm bg-black/30 rounded-lg p-6 max-w-4xl mx-auto">
         {/* Header com botão de voltar e informações do evento */}
         <div className="mb-6">
@@ -322,25 +333,24 @@ export default function EventPage() {
           </div>
 
           {/* Botão do relatório de compras */}
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-3">
             <button
               onClick={() => setShowShoppingReport(true)}
               className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Lista de Compras
+            </button>
+            <button
+              onClick={() => setShowCompleteReport(true)}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Relatório Completo
             </button>
           </div>
         </div>

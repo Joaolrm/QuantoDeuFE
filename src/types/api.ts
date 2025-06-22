@@ -142,3 +142,41 @@ export interface EventShoppingStatisticsDTO {
   totalParticipants: number;
   items: ItemShoppingStatisticsDTO[];
 }
+
+export interface EventCompleteReportDTO {
+  eventId: number;
+  eventName: string;
+  eventDate: string;
+  eventAddress: string;
+  hashInvite: string;
+  totalParticipants: number;
+  totalEventCost: number;
+  items: ItemCompleteReportDTO[];
+  participants: ParticipantSummaryDTO[];
+}
+
+export interface ItemCompleteReportDTO {
+  itemId: number;
+  itemName: string;
+  isRequired: boolean;
+  totalCost: number;
+  totalChosenBy: number;
+  costPerPerson: number;
+  participantIds: number[];
+}
+
+export interface ParticipantSummaryDTO {
+  peopleId: number;
+  name: string;
+  phoneNumber: string;
+  isAdmin: boolean;
+  totalItems: number;
+  totalCost: number;
+  itemsResponsible: ParticipantItemDetailDTO[];
+}
+
+export interface ParticipantItemDetailDTO {
+  itemId: number;
+  itemName: string;
+  individualCost: number;
+}
