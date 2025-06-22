@@ -19,6 +19,7 @@ import {
   AddItemToParticipantDTO,
   ItemUpdateDTO,
   PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO,
+  EventShoppingStatisticsDTO,
 } from "../types/api";
 
 const api = axios.create({
@@ -130,6 +131,11 @@ export const apiService = {
     itemData: ItemUpdateDTO
   ): Promise<ItemSimpleResponseDTO> {
     const response = await api.put(`/Itens/${itemId}`, itemData);
+    return response.data;
+  },
+
+  async getEventShoppingStatistics(eventId: number): Promise<EventShoppingStatisticsDTO> {
+    const response = await api.get(`/Events/${eventId}/ShoppingStatistics`);
     return response.data;
   },
 };

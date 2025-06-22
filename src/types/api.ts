@@ -124,3 +124,21 @@ export interface PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDat
   peopleId: number;
   selectedOptionalItemsId?: number[];
 }
+
+export interface ItemShoppingStatisticsDTO {
+  itemId: number;
+  itemName: string;
+  isRequired: boolean;
+  totalCost: number;
+  totalChosenBy: number;
+  maleCount: number;
+  femaleCount: number;
+  unspecifiedCount: number;
+}
+
+export interface EventShoppingStatisticsDTO {
+  eventId: number;
+  eventName: string;
+  totalParticipants: number;
+  items: ItemShoppingStatisticsDTO[];
+}
