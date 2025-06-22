@@ -74,11 +74,17 @@ export function ItemEditModal({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    const checked = type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
+    const checked =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : type === "number" ? parseFloat(value) || 0 : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : type === "number"
+          ? parseFloat(value) || 0
+          : value,
     }));
   };
 
@@ -88,10 +94,13 @@ export function ItemEditModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-[#330000]/95 rounded-lg p-6 w-full max-w-md backdrop-blur-sm">
         <h2 className="text-xl font-bold text-white mb-4">Editar Item</h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-white mb-1">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-white mb-1"
+            >
               Nome do Item
             </label>
             <input
@@ -100,6 +109,8 @@ export function ItemEditModal({
               name="name"
               value={formData.name}
               onChange={handleInputChange}
+              onFocus={(e) => e.target.select()}
+              autoFocus
               className="w-full rounded-md border border-gray-400 bg-[#550000] text-white p-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
               placeholder="Nome do item"
               maxLength={50}
@@ -111,7 +122,10 @@ export function ItemEditModal({
           </div>
 
           <div>
-            <label htmlFor="totalCost" className="block text-sm font-medium text-white mb-1">
+            <label
+              htmlFor="totalCost"
+              className="block text-sm font-medium text-white mb-1"
+            >
               Custo Total (R$)
             </label>
             <input
@@ -120,6 +134,7 @@ export function ItemEditModal({
               name="totalCost"
               value={formData.totalCost}
               onChange={handleInputChange}
+              onFocus={(e) => e.target.select()}
               step="0.01"
               min="0"
               className="w-full rounded-md border border-gray-400 bg-[#550000] text-white p-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -138,10 +153,13 @@ export function ItemEditModal({
                 onChange={handleInputChange}
                 className="rounded border-gray-400 bg-[#550000] text-orange-500 focus:ring-orange-500"
               />
-              <span className="text-sm font-medium text-white">Item obrigatório</span>
+              <span className="text-sm font-medium text-white">
+                Item obrigatório
+              </span>
             </label>
             <p className="text-xs text-gray-300 mt-1">
-              Itens obrigatórios são automaticamente incluídos para todos os participantes
+              Itens obrigatórios são automaticamente incluídos para todos os
+              participantes
             </p>
           </div>
 
@@ -166,4 +184,4 @@ export function ItemEditModal({
       </div>
     </div>
   );
-} 
+}

@@ -74,7 +74,7 @@ export function LoginForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#4B0000] via-[#660000] to-black p-4 sm:p-8">
-      <div className="w-full max-w-md bg-[#330000]/90 rounded-xl shadow-lg p-6 sm:p-8 backdrop-blur-sm text-white">
+      <div className="w-full max-w-md bg-[#330000]/90 rounded-xl shadow-lg p-6 sm:p-8 backdrop-blur-sm text-white transform -translate-y-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2">
           Quanto Deu?
         </h1>
