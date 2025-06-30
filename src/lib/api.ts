@@ -21,6 +21,7 @@ import {
   PeopleAddPeopleIdSelectedOptionalItemsIdCutIdNamePhoneNumberDateOfBirthGenderDTO,
   EventShoppingStatisticsDTO,
   EventCompleteReportDTO,
+  EventSpreadsheetReportDTO,
 } from "../types/api";
 
 const api = axios.create({
@@ -34,9 +35,11 @@ const api = axios.create({
 export const apiService = {
   // Pessoas
   async getPeopleEventsByPhone(
-    phoneNumber: string
+    phoneNumber: string,
+    isAdmin?: boolean
   ): Promise<PeopleAddEventsDTO> {
-    const response = await api.get(`/Peoples/${phoneNumber}/Events`);
+    const params = isAdmin !== undefined ? { isAdmin } : {};
+    const response = await api.get(`/Peoples/${phoneNumber}/Events`, { params });
     return response.data;
   },
 
@@ -143,6 +146,12 @@ export const apiService = {
   // Complete Report
   async getEventCompleteReport(eventId: number): Promise<EventCompleteReportDTO> {
     const response = await api.get(`/Events/${eventId}/CompleteReport`);
+    return response.data;
+  },
+
+  // Spreadsheet Report
+  async getEventSpreadsheetReport(eventId: number): Promise<EventSpreadsheetReportDTO> {
+    const response = await api.get(`/Events/${eventId}/SpreadsheetReport`);
     return response.data;
   },
 };

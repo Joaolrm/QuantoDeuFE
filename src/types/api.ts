@@ -14,6 +14,15 @@ export interface EventCutItensDTO {
   address: string;
 }
 
+// Nova interface para eventos com informação de admin
+export interface EventWithAdminDTO {
+  id: number;
+  name: string;
+  date: string;
+  address: string;
+  isAdmin: boolean;
+}
+
 export interface ItemCutIdDTO {
   eventId: number;
   name: string;
@@ -26,7 +35,7 @@ export interface PeopleAddEventsDTO {
   phoneNumber: string;
   dateOfBirth: string;
   gender: "Male" | "Female" | "Unspecified";
-  events: EventCutItensDTO[];
+  events: EventWithAdminDTO[];
 }
 
 export interface ItemAddParticipantsCutEventIdDTO {
@@ -179,4 +188,39 @@ export interface ParticipantItemDetailDTO {
   itemId: number;
   itemName: string;
   individualCost: number;
+}
+
+// Novas interfaces baseadas na documentação atualizada
+export interface EventSpreadsheetReportDTO {
+  eventId: number;
+  eventName: string;
+  eventDate: string;
+  eventAddress: string;
+  totalEventCost: number;
+  items: SpreadsheetItemDTO[];
+  participants: SpreadsheetParticipantDTO[];
+  totals: SpreadsheetTotalsDTO;
+}
+
+export interface SpreadsheetItemDTO {
+  itemId: number;
+  itemName: string;
+  isRequired: boolean;
+  totalCost: number;
+  costPerPerson: number;
+}
+
+export interface SpreadsheetParticipantDTO {
+  peopleId: number;
+  name: string;
+  phoneNumber: string;
+  isAdmin: boolean;
+  totalCost: number;
+  itemCosts: Record<string, number>;
+}
+
+export interface SpreadsheetTotalsDTO {
+  totalEventCost: number;
+  itemTotals: Record<string, number>;
+  participantTotals: Record<string, number>;
 }
